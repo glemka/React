@@ -1,8 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Domain;
 using Microsoft.AspNetCore.Mvc;
+using Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
@@ -10,18 +11,26 @@ namespace API.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly DataContext _context;
+        public ValuesController(DataContext context)
+        {
+            this._context = context;
+
+        }
         // GET api/values
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        public async Task<ActionResult<IEnumerable<Value>>> Get()
         {
-            return new string[] { "value1", "value2" };
+            var values = await this._context.Values.ToListAsync();
+            return Ok(values);
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public async Task<ActionResult<Value>> Get(int id)
         {
-            return "value";
+            var value = await this._context.Values.FindAsync(id);
+            return Ok(value);
         }
 
         // POST api/values
