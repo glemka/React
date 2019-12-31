@@ -1,5 +1,47 @@
-@valuesUrl = http://localhost:5000/api/values
+@apiUrl = http://localhost:5000/api
 ###
-GET {{valuesUrl}} HTTP/1.1
+GET {{apiUrl}}/activities HTTP/1.1
 Accept: application/json
 Content-Type: application/json
+
+###
+POST {{apiUrl}}/Activities HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id" : "{{$guid}}",
+    "title" : "Test Create Title",
+    "description" : "Descrption for the test event",
+    "category" : "agro",
+    "date" :"{{$datetime iso8601}}",
+    "city" : "London",
+    "venue": "tower of london"
+}
+
+###
+GET {{apiUrl}}/Activities/7ffb3a2e-ca02-4f7e-ad60-ae06d4daff2b HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+
+###
+DELETE {{apiUrl}}/Activities/d127a660-ecac-4dd6-9af9-8628c526378a HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+
+###
+PUT {{apiUrl}}/Activities/7ffb3a2e-ca02-4f7e-ad60-ae06d4daff2b HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "id" : "7ffb3a2e-ca02-4f7e-ad60-ae06d4daff2b",
+    "title" : "Test Create Title",
+    "description" : "Descrption for the test event",
+    "category" : "agro",
+    "date" :"{{$datetime iso8601}}",
+    "city" : "XXX",
+    "venue": "XXX"
+}
