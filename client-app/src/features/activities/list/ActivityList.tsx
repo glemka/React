@@ -46,7 +46,7 @@ const ActivityList: React.FC<IProps> = ({
                   color="red"
                   loading={target === activity.id && submitting}
                 />
-                <Label floated="left" basic content="Caegory" />
+                <Label floated="left" basic content={activity.category} />
               </Item.Extra>
             </Item.Content>
           </Item>
