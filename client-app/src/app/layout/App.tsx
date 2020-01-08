@@ -1,25 +1,23 @@
-import React, { Fragment, useState, useEffect, SyntheticEvent } from "react";
+import React, { Fragment, useState, useEffect, SyntheticEvent, useContext } from "react";
 import { Container } from "semantic-ui-react";
 import agent from "../api/agent";
 import { IActivity } from "../models/activity";
 import NavBar from "./nav/NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import LoadingComponent from "./LoadingComponent";
+import ActivityStore from '../stores/activityStore'
+import {observer} from 'mobx-react-lite'
 
 const App = () => {
+  const activityStore = useContext(ActivityStore);
+
   const [activities, setActivities] = useState<IActivity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<IActivity | null>(
     null
   );
   const [editMode, setEditMode] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
   const [submitting, setSubmitting] = useState<boolean>(false);
   const [target, setTarget] = useState<string>("");
-
-  const handleSelectedActivity = (id: string) => {
-    setSelectedActivity(activities.filter(ac => ac.id === id)[0]);
-    setEditMode(false);
-  };
 
   const handleOpenCreateForm = () => {
     setSelectedActivity(null);
@@ -64,21 +62,10 @@ const App = () => {
       .then(() => setSubmitting(false));
   };
   useEffect(() => {
-    agent.Activities.list()
-      .then(response => {
-        let activities: IActivity[] = [];
-        response.forEach(act => {
-          act.date = act.date.split(".")[0];
-          activities.push(act);
-        });
-        setActivities(activities);
-      })
-      .then(() => {
-        setLoading(false);
-      });
-  }, []);
+    activityStore.loadActivities()
+  }, [activityStore]);
 
-  if (loading) {
+  if (activityStore.loadingInitial) {
     return <LoadingComponent inverted={true} content="Loading activities" />;
   }
   return (
@@ -86,10 +73,6 @@ const App = () => {
       <NavBar openCreateForm={handleOpenCreateForm} />
       <Container style={{ marginTop: "7em" }}>
         <ActivityDashboard
-          activities={activities}
-          editMode={editMode}
-          selectedActivity={selectedActivity}
-          selectActivity={handleSelectedActivity}
           setSelectedActivity={setSelectedActivity}
           setEditMode={setEditMode}
           createActivity={handleCreateActivity}
@@ -102,4 +85,4 @@ const App = () => {
     </Fragment>
   );
 };
-export default App;
+export default observer(App);
