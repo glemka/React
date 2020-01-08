@@ -5,29 +5,29 @@ import ActivityList from "../list/ActivityList";
 import ActivityDetails from "../details/ActivityDetails";
 import ActivityForm from "../form/ActivityForm";
 import { observer } from "mobx-react-lite";
-import ActivityStore from '../../../app/stores/activityStore'
+import ActivityStore from "../../../app/stores/activityStore";
 
 interface IProps {
   setEditMode: (editMode: boolean) => void;
   setSelectedActivity: (activity: IActivity | null) => void;
-  createActivity: (activity: IActivity) => void;
   editActivity: (activity: IActivity) => void;
-  deleteActivity: (event: SyntheticEvent<HTMLButtonElement> ,id: string) => void;
-  submitting: boolean,
-  target: string
+  deleteActivity: (
+    event: SyntheticEvent<HTMLButtonElement>,
+    id: string
+  ) => void;
+  submitting: boolean;
+  target: string;
 }
 const ActivityDashboard: React.FC<IProps> = ({
   setEditMode,
   setSelectedActivity,
-  createActivity,
   editActivity,
   deleteActivity,
   submitting,
   target
 }) => {
-
   const activityStore = useContext(ActivityStore);
-  const {editMode, selectedActivity} = activityStore
+  const { editMode, selectedActivity } = activityStore;
   return (
     <Grid>
       <Grid.Column width={10}>
@@ -45,10 +45,12 @@ const ActivityDashboard: React.FC<IProps> = ({
           />
         )}
         {editMode && (
-          <ActivityForm key={(selectedActivity && selectedActivity.id) || 0 } setEditMode={setEditMode} activity={selectedActivity!} 
-          createActivity={createActivity}
-          editActivity={editActivity}
-          submitting={submitting}/>
+          <ActivityForm
+            key={(selectedActivity && selectedActivity.id) || 0}
+            setEditMode={setEditMode}
+            activity={selectedActivity!}
+            editActivity={editActivity}
+          />
         )}
       </Grid.Column>
     </Grid>

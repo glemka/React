@@ -16,7 +16,7 @@ const ActivityList: React.FC<IProps> = ({
 }) => {
   
   const activityStore = useContext(ActivityStore);
-  const {activities, selectActivity} = activityStore
+  const {activitiesByDate: activities, selectActivity} = activityStore
   return (
     <Segment clearing>
       <Item.Group divided>
