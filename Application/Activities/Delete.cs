@@ -1,35 +1,48 @@
+using System.Diagnostics;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Errors;
 using MediatR;
 using Persistence;
 
-namespace Application.Activities {
-    public class Delete {
-        public class Command : IRequest<Unit> {
+namespace Application.Activities
+{
+    public class Delete
+    {
+        public class Command : IRequest<Unit>
+        {
             public Guid Id { get; set; }
         }
-        public class Handler : IRequestHandler<Command, Unit> {
+        public class Handler : IRequestHandler<Command, Unit>
+        {
             private readonly DataContext _context;
-            public Handler (DataContext context) {
+            public Handler(DataContext context)
+            {
                 this._context = context;
             }
 
-            public async Task<Unit> Handle (Command request, CancellationToken cancellationToken) {
+            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            {
                 var activity = await this._context.Activities.FindAsync(request.Id);
-                
-                if(activity == null)
+
+                if (activity == null)
                 {
-                    throw new Exception("Could not find activity");
+                    throw new RestException(HttpStatusCode.NotFound, new
+                    {
+                        activity = "Not found"
+                    });
                 }
                 _context.Remove(activity);
-                 var success = await this._context.SaveChangesAsync() > 0 ; 
+                var success = await this._context.SaveChangesAsync() > 0;
 
-                if(success){
+                if (success)
+                {
                     return Unit.Value;
                 }
 
-                throw new Exception ("Problem saving changes");
+                throw new Exception("Problem saving changes");
             }
         }
 
