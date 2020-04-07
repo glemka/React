@@ -1,0 +1,22 @@
+using System.Linq;
+using System.Security.Claims;
+using Application.Validators;
+using Microsoft.AspNetCore.Http;
+
+namespace Infrastructure.Security
+{
+    public class UserAccessor : IUserAccessor
+    {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public UserAccessor(IHttpContextAccessor httpContextAccessor)
+        {
+            this._httpContextAccessor = httpContextAccessor;
+
+        }
+        public string GetCurrentUsername()
+        {
+            var username= this._httpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x=>x.Type == ClaimTypes.NameIdentifier)?.Value;
+            return username;
+        }
+    }
+}

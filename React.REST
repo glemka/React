@@ -1,4 +1,34 @@
 @apiUrl = http://localhost:5000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2IiLCJuYmYiOjE1ODYyODk0MjUsImV4cCI6MTU4Njg5NDIyNSwiaWF0IjoxNTg2Mjg5NDI1fQ.An9wXhrBW_LcQHbEsg1eDbTmAA2fA582x-w_yubo-bM
+###
+POST {{apiUrl}}/user/login HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email" : "bob.test.com",
+    "password" : "Pa$$w0rd"
+}
+
+
+###
+POST {{apiUrl}}/user/register HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username" : "Sally1",    
+    "displayname" : "Sally1",
+    "email" : "Sally1@test.com",
+    "password" : "aaaaaaa"
+}
+
+###
+Get {{apiUrl}}/user HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 ###
 GET {{apiUrl}}/activities HTTP/1.1
 Accept: application/json
@@ -23,7 +53,7 @@ Content-Type: application/json
 GET {{apiUrl}}/Activities/0c71b12e-d341-48d6-ad47-8c4e7bcf76cf HTTP/1.1
 Accept: application/json
 Content-Type: application/json
-
+Authorization: Bearer {{token}}
 
 ###
 DELETE {{apiUrl}}/Activities/d127a660-ecac-4dd6-9af9-8628c526378a HTTP/1.1
@@ -44,4 +74,26 @@ Content-Type: application/json
     "date" :"{{$datetime iso8601}}",
     "city" : "XXX",
     "venue": "XXX"
+}
+
+
+###
+POST {{apiUrl}}/user/login HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email" : "bob.test.com",
+    "password" : ""
+}
+
+
+###
+POST {{apiUrl}}/user/login HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email" : "bob.test.com",
+    "password" : "xxx"
 }
