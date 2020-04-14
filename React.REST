@@ -1,5 +1,5 @@
 @apiUrl = http://localhost:5000/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2IiLCJuYmYiOjE1ODYyODk0MjUsImV4cCI6MTU4Njg5NDIyNSwiaWF0IjoxNTg2Mjg5NDI1fQ.An9wXhrBW_LcQHbEsg1eDbTmAA2fA582x-w_yubo-bM
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2IiLCJuYmYiOjE1ODY4OTMwMjEsImV4cCI6MTU4NzQ5NzgyMSwiaWF0IjoxNTg2ODkzMDIxfQ.XAmxeJvH4ABChP6nFfO0Uwak-wh8HR-AxIDRrp1vnLc
 ###
 POST {{apiUrl}}/user/login HTTP/1.1
 Accept: application/json
@@ -33,11 +33,13 @@ Authorization: Bearer {{token}}
 GET {{apiUrl}}/activities HTTP/1.1
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 ###
 POST {{apiUrl}}/Activities HTTP/1.1
 Accept: application/json
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "id" : "{{$guid}}",
@@ -50,7 +52,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{apiUrl}}/Activities/0c71b12e-d341-48d6-ad47-8c4e7bcf76cf HTTP/1.1
+GET {{apiUrl}}/Activities/C0D73AB1-2491-4AA6-9762-497DA95519F8	
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}

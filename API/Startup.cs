@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
-
+using AutoMapper;
 namespace API
 {
     public class Startup
@@ -48,6 +48,7 @@ namespace API
             });
 
             services.AddMediatR(typeof(List.Query).Assembly);
+            services.AddAutoMapper(typeof(List.Handler).Assembly);
             services
                 .AddControllers(opt=>{
                     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
