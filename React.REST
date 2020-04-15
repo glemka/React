@@ -1,6 +1,8 @@
 @apiUrl = http://localhost:5000/api
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiJib2IiLCJuYmYiOjE1ODY4OTMwMjEsImV4cCI6MTU4NzQ5NzgyMSwiaWF0IjoxNTg2ODkzMDIxfQ.XAmxeJvH4ABChP6nFfO0Uwak-wh8HR-AxIDRrp1vnLc
-###
+
+
+### Login
 POST {{apiUrl}}/user/login HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -9,9 +11,9 @@ Content-Type: application/json
     "email" : "bob.test.com",
     "password" : "Pa$$w0rd"
 }
-
-
 ###
+
+### Register
 POST {{apiUrl}}/user/register HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -22,20 +24,26 @@ Content-Type: application/json
     "email" : "Sally1@test.com",
     "password" : "aaaaaaa"
 }
-
 ###
-Get {{apiUrl}}/user HTTP/1.1
+
+### Get user
+GET {{apiUrl}}/user HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
+
+
+### Get Activities
 GET {{apiUrl}}/activities HTTP/1.1
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
+
+### Create activity
 POST {{apiUrl}}/Activities HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -50,26 +58,42 @@ Authorization: Bearer {{token}}
     "city" : "London",
     "venue": "tower of london"
 }
-
 ###
-GET {{apiUrl}}/Activities/C0D73AB1-2491-4AA6-9762-497DA95519F8	
+
+### Join activity
+POST {{apiUrl}}/Activities/98253cca-67a0-4746-9532-eeac83f9d512/attend
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+### Leave activity
+DELETE  {{apiUrl}}/Activities/ba54699b-f69c-4a1d-92f4-d5b86a9bc5bf/unattend
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+### Get activity
+GET {{apiUrl}}/Activities/98253cca-67a0-4746-9532-eeac83f9d512
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+### Delete activity
+DELETE {{apiUrl}}/Activities/d127a660-ecac-4dd6-9af9-8628c526378a HTTP/1.1
+Accept: application/json
+Content-Type: application/json
+###
+
+### Update activity
+PUT {{apiUrl}}/Activities/d4768159-3c34-4333-90f7-addc64abfff9
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
-###
-DELETE {{apiUrl}}/Activities/d127a660-ecac-4dd6-9af9-8628c526378a HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-
-
-###
-PUT {{apiUrl}}/Activities/7ffb3a2e-ca02-4f7e-ad60-ae06d4daff2b HTTP/1.1
-Accept: application/json
-Content-Type: application/json
-
 {
-    "id" : "7ffb3a2e-ca02-4f7e-ad60-ae06d4daff2b",
     "title" : "Test Create Title",
     "description" : "Descrption for the test event",
     "category" : "agro",
@@ -77,9 +101,10 @@ Content-Type: application/json
     "city" : "XXX",
     "venue": "XXX"
 }
-
-
 ###
+
+
+### Login without password
 POST {{apiUrl}}/user/login HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -88,9 +113,9 @@ Content-Type: application/json
     "email" : "bob.test.com",
     "password" : ""
 }
-
-
 ###
+
+### loging with short password
 POST {{apiUrl}}/user/login HTTP/1.1
 Accept: application/json
 Content-Type: application/json
@@ -99,3 +124,4 @@ Content-Type: application/json
     "email" : "bob.test.com",
     "password" : "xxx"
 }
+###
