@@ -68,7 +68,7 @@ Authorization: Bearer {{token}}
 ###
 
 ### Leave activity
-DELETE  {{apiUrl}}/Activities/ba54699b-f69c-4a1d-92f4-d5b86a9bc5bf/unattend
+DELETE  {{apiUrl}}/Activities/ba54699b-f69c-4a1d-92f4-d5b86a9bc5bf/attend
 Accept: application/json
 Content-Type: application/json
 Authorization: Bearer {{token}}
