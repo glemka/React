@@ -1,4 +1,4 @@
-namespace Application.Validators
+namespace Application.Interfaces
 {
     public interface IUserAccessor
     {
