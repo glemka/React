@@ -5,6 +5,10 @@ import { IAttendee } from "../../../app/models/activity";
 interface IProps {
   attendees: IAttendee[];
 }
+const styles ={
+  borderColor: 'orange',
+  borderWidth: 2
+}
 const ActivityListItemAttendees: React.FC<IProps> = ({ attendees }) => {
   return (
     <List horizontal>
@@ -17,6 +21,8 @@ const ActivityListItemAttendees: React.FC<IProps> = ({ attendees }) => {
                 size="mini"
                 circular
                 src={attende.image || `/assets/user.png`}
+                bordered
+                style={attende.following ? styles : null}
               />
             }
           />

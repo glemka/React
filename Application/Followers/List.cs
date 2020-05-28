@@ -52,7 +52,7 @@ namespace Application.Followers
                         {
                             profiles.Add(await _profileReader.ReadProfile(follower.Target.UserName));
                         }
-                        break;
+                    break;
                     }
                     default:
                         break;
