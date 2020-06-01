@@ -138,9 +138,11 @@ export default class ProfileStore {
     this.loading = true;
     try {
       await agent.Profiles.follow(username);
+      const userProfile = await agent.Profiles.get(this.rootStore.userStore.user!.username);
       runInAction(() => {
         this.profile!.following = true;
         this.profile!.followersCount++;
+        this.followings = [...this.followings, userProfile];
         this.loading = false;
       });
     } catch (error) {
@@ -157,6 +159,9 @@ export default class ProfileStore {
       runInAction(() => {
         this.profile!.following = false;
         this.profile!.followersCount--;
+        if(this.activeTab == 3){
+          this.followings = this.followings.filter(x=>x.username != this.rootStore.userStore.user!.username)
+        }
         this.loading = false;
       });
     } catch (error) {
