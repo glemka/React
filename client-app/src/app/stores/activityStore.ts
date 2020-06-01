@@ -11,6 +11,9 @@ import {
   HubConnectionBuilder,
   LogLevel,
 } from '@microsoft/signalr';
+
+const LIMIT = 2;
+
 export default class ActivityStore {
   rootStore: RootStore;
   constructor(rootStore: RootStore) {
@@ -24,7 +27,16 @@ export default class ActivityStore {
   @observable target: string = '';
   @observable loading: boolean = false;
   @observable.ref hubConnection: HubConnection | null = null;
+  @observable activityCount: number = 0;
+  @observable page = 0;
 
+  @computed get totalPages() {
+    return Math.ceil(this.activityCount / LIMIT);
+  }
+
+  @action setPage = (page: number) => {
+    this.page = page;
+  };
   @computed get activitiesByDate() {
     return this.groupActivitiesByDate(
       Array.from(this.activityRegistry.values())
@@ -75,7 +87,7 @@ export default class ActivityStore {
     this.hubConnection!.invoke('RemoveFromGroup', this.activity!.id)
       .then(() => this.hubConnection!.stop())
       .then(() => console.log('Connection stopped'))
-      .catch((error) => console.log(error))
+      .catch((error) => console.log(error));
   };
 
   @action addComment = async (values: any) => {
@@ -91,8 +103,10 @@ export default class ActivityStore {
   loadActivities = async () => {
     this.loadingInitial = true;
     try {
-      const activities = await agent.Activities.list();
+      const activitiesEnvelope = await agent.Activities.list(LIMIT, this.page);
+      const {activities, activityCount} = activitiesEnvelope;
       runInAction('loading activities', () => {
+        this.activityCount = activityCount;
         activities.forEach((act) => {
           setActivityProps(act, this.rootStore.userStore.user!);
           this.activityRegistry.set(act.id, act);
