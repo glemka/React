@@ -12,8 +12,8 @@ export default class ProfileStore {
     reaction(
       () => this.activeTab,
       (activeTab) => {
-        if (activeTab == 3 || activeTab == 4) {
-          const predicate = activeTab == 3 ? 'followers' : 'following';
+        if (activeTab === 3 || activeTab === 4) {
+          const predicate = activeTab === 3 ? 'followers' : 'following';
           this.loadFollowings(predicate);
         } else {
           this.followings = [];
@@ -142,7 +142,9 @@ export default class ProfileStore {
       runInAction(() => {
         this.profile!.following = true;
         this.profile!.followersCount++;
-        this.followings = [...this.followings, userProfile];
+        if(this.activeTab === 3){
+          this.followings = [...this.followings, userProfile];
+        }
         this.loading = false;
       });
     } catch (error) {
@@ -159,8 +161,8 @@ export default class ProfileStore {
       runInAction(() => {
         this.profile!.following = false;
         this.profile!.followersCount--;
-        if(this.activeTab == 3){
-          this.followings = this.followings.filter(x=>x.username != this.rootStore.userStore.user!.username)
+        if(this.activeTab === 3){
+          this.followings = this.followings.filter(x=>x.username !== this.rootStore.userStore.user!.username)
         }
         this.loading = false;
       });
