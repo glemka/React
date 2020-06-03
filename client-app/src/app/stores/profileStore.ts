@@ -1,5 +1,5 @@
 import { RootStore } from './rootStore';
-import { IProfile, IPhoto } from '../models/profile';
+import { IProfile, IPhoto, IUserActivity } from '../models/profile';
 import { observable, action, runInAction, computed, reaction } from 'mobx';
 import agent from '../api/agent';
 import { toast } from 'react-toastify';
@@ -24,10 +24,12 @@ export default class ProfileStore {
 
   @observable profile: IProfile | null = null;
   @observable loadingProfile = true;
+  @observable loadingActivities = false;
   @observable uploadingPhoto = false;
   @observable loading = false;
   @observable followings: IProfile[] = [];
   @observable activeTab: number = 0;
+  @observable userActivities: IUserActivity[] = [];
 
   @computed get isCurrentUser() {
     if (this.rootStore.userStore.user && this.profile) {
@@ -37,6 +39,25 @@ export default class ProfileStore {
   }
   @action setActiveTab = (activeIndex: number) => {
     this.activeTab = activeIndex;
+  };
+
+  @action loadUserActivities = async (username: string, predicate?: string) => {
+    this.loadingActivities = true;
+    try {
+      const activities = await agent.Profiles.listActivities(
+        username,
+        predicate!
+      );
+      runInAction(() => {
+        this.userActivities = activities;
+        this.loadingActivities = false;
+      });
+    } catch (error) {
+      runInAction(() => {
+        this.loadingActivities = false;
+      });
+      console.log(error);
+    }
   };
 
   @action loadProfile = async (username: string) => {
@@ -138,11 +159,13 @@ export default class ProfileStore {
     this.loading = true;
     try {
       await agent.Profiles.follow(username);
-      const userProfile = await agent.Profiles.get(this.rootStore.userStore.user!.username);
+      const userProfile = await agent.Profiles.get(
+        this.rootStore.userStore.user!.username
+      );
       runInAction(() => {
         this.profile!.following = true;
         this.profile!.followersCount++;
-        if(this.activeTab === 3){
+        if (this.activeTab === 3) {
           this.followings = [...this.followings, userProfile];
         }
         this.loading = false;
@@ -161,8 +184,10 @@ export default class ProfileStore {
       runInAction(() => {
         this.profile!.following = false;
         this.profile!.followersCount--;
-        if(this.activeTab === 3){
-          this.followings = this.followings.filter(x=>x.username !== this.rootStore.userStore.user!.username)
+        if (this.activeTab === 3) {
+          this.followings = this.followings.filter(
+            (x) => x.username !== this.rootStore.userStore.user!.username
+          );
         }
         this.loading = false;
       });
