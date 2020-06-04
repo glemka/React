@@ -31,7 +31,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
     }
   },[setAppLoaded, getUser, token])
   if(!appLoaded){
-    return (<LoadingComponent content ='Loading app'/>)
+    return (<LoadingComponent inverted={true} content ='Loading app'/>)
   }
 
   return (
