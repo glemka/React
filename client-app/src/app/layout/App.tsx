@@ -1,6 +1,6 @@
 import React, { Fragment, useContext, useEffect } from "react";
 import { Container } from "semantic-ui-react";
-import NavBar from "./nav/NavBar";
+import NavBar from "../../features/nav/NavBar";
 import ActivityDashboard from "../../features/activities/dashboard/ActivityDashboard";
 import { ToastContainer } from "react-toastify";
 import { observer } from "mobx-react-lite";
