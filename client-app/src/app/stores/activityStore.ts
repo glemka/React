@@ -41,7 +41,6 @@ export default class ActivityStore {
 
   @action setPredicate = (predicate: string, value: string | Date) => {
     this.predicate.clear();
-    debugger;
     if (predicate !== 'all') {
       this.predicate.set(predicate, value);
     }
