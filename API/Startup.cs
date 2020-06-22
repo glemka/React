@@ -150,14 +150,28 @@ namespace API
             app.UseReferrerPolicy(opt=> opt.NoReferrer());
             app.UseXXssProtection(opt=> opt.EnabledWithBlockMode());
             app.UseXfo(opt=>opt.Deny());
-            app.UseCspReportOnly(opt=> opt
+            app.UseCsp(opt=> opt
                 .BlockAllMixedContent()
-                .StyleSources(s=> s.Self())
-                .FontSources(s=>s.Self())
+                .StyleSources(s=> s.Self().CustomSources(
+                    "https://fonts.googleapis.com", 
+                    "https://fonts.gstatic.com",
+                    "sha256-i9PW301ezm2jiIOyMUahrZ7cPVhimH1JDhrVGnKz2bc="
+                    )
+                )
+                .FontSources(s=>s.Self().CustomSources(
+                    "data:",
+                    "https://fonts.gstatic.com")
+                )
                 .FormActions(s=>s.Self())
                 .FrameAncestors(s=>s.Self())
-                .ImageSources(s=>s.Self())
-                .ScriptSources(s=>s.Self())
+                .ImageSources(s=>s.Self().CustomSources(
+                    "https://res.cloudinary.com",
+                    "blob:",
+                    "data:")
+                )
+                .ScriptSources(s=>s.Self().CustomSources(
+                    "sha256-zTmokOtDNMlBIULqs//ZgFtzokerG72Q30ccMjdGbSA=")
+                )
             );
             
             app.UseDefaultFiles();
